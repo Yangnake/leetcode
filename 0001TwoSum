@@ -1,0 +1,69 @@
+//解法一：这是最简单的暴力解法，时间复杂度为O(n^2)
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        vector<int>cont;
+        for(int i=0;i<nums.size();i++){
+            for (int j=i+1;j<nums.size();j++){
+                if(nums[i]+nums[j]==target){
+                    cont.push_back(i);
+                    cont.push_back(j);
+                }
+            }
+        }
+        return cont;
+    }
+};
+
+/*
+对stl库中map的一些解释：
+std::map的内部实现了以可红黑树，有对其键值进行排序的功能，所以map是个有序的容器，map中的每一个元素都是红黑树的一个节点，插入，删除查找等操作的复杂度都是logn
+#include<map>
+
+unordered_map与map的对比:
+unorder_map的内部实现了一个哈希表，其中的元素无序，unorder_map中每个特定的key都会通过一些特定的哈希运算到一个特定的位置，这个特定的位置可以重复，所以这个位置可以重复，将这个位置称为哈希桶
+#include<unordered_map>
+*/
+
+//解法二：字典模拟Hash.通过模拟hash表的方法来进行查找，每次查找的时间复杂度为O(1),通过第一次遍历每个数，对每个数，找第二个数时采用target-nums[n]是否在表中
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+using namespace std;
+
+class Solution{
+public:
+    vector<int> twoSum(vector<int>& nums, int target){
+        unordered_map<int,int> umap;
+        for(int i=0;i<nums.size();i++){
+            umap[nums[i]]=i;
+        }
+        for(int i=0;i<nums.size();i++){
+            auto it = umap.find(target - nums[i]);
+
+            //此处不能遗漏去重判断
+            if(it != umap.end() && it->second != i){
+                return vector<int>{i, it->second};
+            }
+        }
+        return vector<int>();
+    }
+};
+
+时间复杂度：O(n)
+空间复杂度：O(n)
+
+//解法三：一遍字典模拟Hash
+  unordered_map<int,int> umap;
+    for(int i=0;i<nums.size();i++){
+        auto it = umap.find(target - nums[i]);
+        
+        //此处不需要去重判断，按照题目的意思，数组中的不存在重复数字
+        //在一次遍历的情况下不会出现重复数字
+        if(it != umap.end()){
+            return vector<int>{it->second, i};
+        }
+        umap[nums[i] = i;
+    }
+    return vector<int>();
+    }
