@@ -34,6 +34,22 @@ G(0) = 1, G(1) = 1
 
 由此可得
 
-思路2：数学演绎法
+# 思路2：数学演绎法
 事实上G(n)函数的值被称为卡塔兰数Cn.
-计算公式：
+计算公式： 
+
+![Image text](https://github.com/Yangnake/leetcode/blob/master/%E5%8D%A1%E7%89%B9%E5%85%B0.png)
+
+算法：
+```
+class Solution(object):
+    def numTrees(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        C = 1
+        for i in range(0, n):
+            C = C * 2*(2*i+1)/(i+2)
+        return int(C)
+```
